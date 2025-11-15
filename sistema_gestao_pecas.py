@@ -86,23 +86,24 @@ class SistemaVisualPecas:
         frame = tk.LabelFrame(
             parent,
             text="🏭 LINHA DE PRODUÇÃO",
-            font=("Arial", 14, "bold"),
+            font=("Arial", 12, "bold"),
             bg=self.cor_card,
             fg=self.cor_texto,
-            padx=10,
-            pady=10
+            padx=8,
+            pady=8
         )
-        frame.pack(fill=tk.BOTH, expand=True, pady=(0, 10))
+        frame.pack(fill=tk.X, pady=(0, 10))
         
-        # Canvas para a esteira
+        # Canvas para a esteira (tamanho fixo)
         self.canvas = tk.Canvas(
             frame,
             bg="#2e2e3e",
-            height=300,
+            width=700,
+            height=180,
             highlightthickness=2,
             highlightbackground=self.cor_primaria
         )
-        self.canvas.pack(fill=tk.BOTH, expand=True)
+        self.canvas.pack()
         
         # Desenhar esteira inicial
         self.desenhar_esteira()
@@ -111,35 +112,35 @@ class SistemaVisualPecas:
         """Desenha a esteira e suas linhas"""
         self.canvas.delete("esteira")
         
-        # Linhas da esteira (efeito de movimento)
-        largura = self.canvas.winfo_width() if self.canvas.winfo_width() > 1 else 700
-        altura = self.canvas.winfo_height() if self.canvas.winfo_height() > 1 else 300
+        # Tamanho fixo
+        largura = 700
+        altura = 180
         
         # Faixa da esteira
         y_centro = altura // 2
         self.canvas.create_rectangle(
-            0, y_centro - 50, largura, y_centro + 50,
+            0, y_centro - 40, largura, y_centro + 40,
             fill="#3e3e4e", outline=self.cor_primaria, width=2, tags="esteira"
         )
         
         # Linhas de movimento (simular esteira rolando)
-        for i in range(-5, 20):
+        for i in range(-5, 15):
             x = (i * 80 + self.posicao_esteira) % largura
             self.canvas.create_line(
-                x, y_centro - 50, x, y_centro + 50,
+                x, y_centro - 40, x, y_centro + 40,
                 fill="#5e5e6e", width=2, tags="esteira"
-            )
+        )
         
         # Área de inspeção (scanner)
         x_scanner = largura * 0.7
         self.canvas.create_rectangle(
-            x_scanner - 5, y_centro - 60, x_scanner + 5, y_centro + 60,
+            x_scanner - 4, y_centro - 50, x_scanner + 4, y_centro + 50,
             fill=self.cor_primaria, outline="", tags="esteira"
         )
         self.canvas.create_text(
-            x_scanner, y_centro - 80,
+            x_scanner, y_centro - 65,
             text="🔍 SCANNER",
-            font=("Arial", 10, "bold"),
+            font=("Arial", 9, "bold"),
             fill=self.cor_primaria,
             tags="esteira"
         )
@@ -147,26 +148,26 @@ class SistemaVisualPecas:
         # Saídas (aprovado/reprovado)
         # Saída superior - APROVADO
         self.canvas.create_rectangle(
-            largura - 100, 20, largura - 20, 80,
+            largura - 80, 15, largura - 15, 60,
             fill=self.cor_sucesso, outline="", tags="esteira"
         )
         self.canvas.create_text(
-            largura - 60, 50,
-            text="✅\nAPROVADO",
-            font=("Arial", 9, "bold"),
+            largura - 47, 37,
+            text="✅\nOK",
+            font=("Arial", 8, "bold"),
             fill=self.cor_fundo,
             tags="esteira"
         )
         
         # Saída inferior - REPROVADO
         self.canvas.create_rectangle(
-            largura - 100, altura - 80, largura - 20, altura - 20,
+            largura - 80, altura - 60, largura - 15, altura - 15,
             fill=self.cor_erro, outline="", tags="esteira"
         )
         self.canvas.create_text(
-            largura - 60, altura - 50,
-            text="❌\nREPROVADO",
-            font=("Arial", 9, "bold"),
+            largura - 47, altura - 37,
+            text="❌\nREP",
+            font=("Arial", 8, "bold"),
             fill=self.cor_fundo,
             tags="esteira"
         )
@@ -185,40 +186,62 @@ class SistemaVisualPecas:
     
     def mover_peca(self):
         """Move a peça pela esteira"""
-        largura = self.canvas.winfo_width() if self.canvas.winfo_width() > 1 else 700
-        altura = self.canvas.winfo_height() if self.canvas.winfo_height() > 1 else 300
+        largura = 700
+        altura = 180
         y_centro = altura // 2
         x_scanner = largura * 0.7
-        x_final_sucesso = largura - 60
-        x_final_erro = largura - 60
         
-        # Move a peça
-        self.peca_x += 8
+        # Move a peça (mais rápido)
+        self.peca_x += 10
         
         # Redesenha a peça
         self.canvas.delete("peca")
         
-        # Cor da peça
+        # Cor da peça (cores reais)
         cores_validas = {
-            'azul': '#89b4fa',
-            'verde': '#a6e3a1',
-            'vermelho': '#f38ba8',
-            'amarelo': '#f9e2af',
-            'roxo': '#cba6f7'
+            'azul': '#4a9eff',
+            'verde': '#50c878',
+            'vermelho': '#ff4444',
+            'amarelo': '#ffcc00',
+            'roxo': '#9966cc',
+            'laranja': '#ff8c00',
+            'rosa': '#ff69b4',
+            'marrom': '#8b4513',
+            'preto': '#1a1a1a',
+            'branco': '#f0f0f0',
+            'cinza': '#808080'
         }
-        cor_peca = cores_validas.get(self.peca_atual['cor'], '#888888')
+        cor_peca = cores_validas.get(self.peca_atual['cor'].lower(), '#888888')
         
-        # Desenha a peça
-        tamanho = 30
+        # Tamanho baseado no comprimento (10-20cm = 15-35 pixels de largura)
+        comprimento = self.peca_atual['comprimento']
+        largura_peca = int(15 + (comprimento - 10) * 2)  # 10cm=15px, 20cm=35px
+        largura_peca = max(10, min(largura_peca, 40))  # Limitar entre 10-40px
+        
+        # Altura baseada no peso (95-105g = 15-25 pixels)
+        peso = self.peca_atual['peso']
+        altura_peca = int(15 + (peso - 95) * 1)  # 95g=15px, 105g=25px
+        altura_peca = max(12, min(altura_peca, 30))  # Limitar entre 12-30px
+        
+        # Desenha a peça (retângulo com dimensões variáveis)
         self.canvas.create_rectangle(
-            self.peca_x - tamanho, y_centro - tamanho,
-            self.peca_x + tamanho, y_centro + tamanho,
+            self.peca_x - largura_peca, y_centro - altura_peca,
+            self.peca_x + largura_peca, y_centro + altura_peca,
             fill=cor_peca, outline="#ffffff", width=2, tags="peca"
         )
+        
+        # Texto: ID e Peso
         self.canvas.create_text(
-            self.peca_x, y_centro,
+            self.peca_x, y_centro - 3,
             text=f"#{self.peca_atual['id']}",
-            font=("Arial", 10, "bold"),
+            font=("Arial", 8, "bold"),
+            fill="#ffffff",
+            tags="peca"
+        )
+        self.canvas.create_text(
+            self.peca_x, y_centro + 7,
+            text=f"{self.peca_atual['peso']}g",
+            font=("Arial", 7),
             fill="#ffffff",
             tags="peca"
         )
@@ -263,13 +286,13 @@ class SistemaVisualPecas:
     
     def mostrar_feedback(self, texto, cor):
         """Mostra feedback visual na tela"""
-        largura = self.canvas.winfo_width() if self.canvas.winfo_width() > 1 else 700
-        altura = self.canvas.winfo_height() if self.canvas.winfo_height() > 1 else 300
+        largura = 700
+        altura = 180
         
         feedback = self.canvas.create_text(
-            largura // 2, altura // 2 - 80,
+            largura // 2, altura // 2 - 50,
             text=texto,
-            font=("Arial", 32, "bold"),
+            font=("Arial", 20, "bold"),
             fill=cor,
             tags="feedback"
         )
@@ -569,66 +592,66 @@ class SistemaVisualPecas:
         # Cria janela de cadastro
         janela = tk.Toplevel(self.root)
         janela.title("🔧 Cadastrar Nova Peça")
-        janela.geometry("400x350")
+        janela.geometry("420x400")
         janela.configure(bg=self.cor_fundo)
         janela.resizable(False, False)
         
         # Frame principal
-        frame = tk.Frame(janela, bg=self.cor_card, padx=20, pady=20)
-        frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        frame = tk.Frame(janela, bg=self.cor_card, padx=15, pady=15)
+        frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
         
         tk.Label(
             frame,
             text="📋 CADASTRAR NOVA PEÇA",
-            font=("Arial", 14, "bold"),
+            font=("Arial", 13, "bold"),
             bg=self.cor_card,
             fg=self.cor_primaria
-        ).pack(pady=(0, 20))
+        ).pack(pady=(0, 15))
         
         # ID
         tk.Label(
             frame,
             text=f"ID da Peça: #{self.proximo_id}",
-            font=("Arial", 11),
+            font=("Arial", 10),
             bg=self.cor_card,
             fg=self.cor_texto
-        ).pack(anchor=tk.W, pady=(0, 10))
+        ).pack(anchor=tk.W, pady=(0, 8))
         
         # Peso
         tk.Label(
             frame,
             text="Peso (gramas):",
-            font=("Arial", 10),
+            font=("Arial", 9),
             bg=self.cor_card,
             fg=self.cor_texto
-        ).pack(anchor=tk.W, pady=(5, 0))
+        ).pack(anchor=tk.W, pady=(3, 0))
         
-        entrada_peso = tk.Entry(frame, font=("Arial", 11), width=30)
-        entrada_peso.pack(fill=tk.X, pady=(0, 10))
+        entrada_peso = tk.Entry(frame, font=("Arial", 10), width=35)
+        entrada_peso.pack(fill=tk.X, pady=(0, 8))
         
         # Cor
         tk.Label(
             frame,
             text="Cor (azul, verde, vermelho, etc):",
-            font=("Arial", 10),
+            font=("Arial", 9),
             bg=self.cor_card,
             fg=self.cor_texto
-        ).pack(anchor=tk.W, pady=(5, 0))
+        ).pack(anchor=tk.W, pady=(3, 0))
         
-        entrada_cor = tk.Entry(frame, font=("Arial", 11), width=30)
-        entrada_cor.pack(fill=tk.X, pady=(0, 10))
+        entrada_cor = tk.Entry(frame, font=("Arial", 10), width=35)
+        entrada_cor.pack(fill=tk.X, pady=(0, 8))
         
         # Comprimento
         tk.Label(
             frame,
             text="Comprimento (centímetros):",
-            font=("Arial", 10),
+            font=("Arial", 9),
             bg=self.cor_card,
             fg=self.cor_texto
-        ).pack(anchor=tk.W, pady=(5, 0))
+        ).pack(anchor=tk.W, pady=(3, 0))
         
-        entrada_comprimento = tk.Entry(frame, font=("Arial", 11), width=30)
-        entrada_comprimento.pack(fill=tk.X, pady=(0, 20))
+        entrada_comprimento = tk.Entry(frame, font=("Arial", 10), width=35)
+        entrada_comprimento.pack(fill=tk.X, pady=(0, 15))
         
         # Função para processar
         def processar_cadastro():

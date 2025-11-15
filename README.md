@@ -12,8 +12,10 @@ Este sistema automatiza o processo de controle de qualidade de peças fabricadas
 
 ### Funcionalidades Principais:
 
-✅ **Geração Automática de Peças** - Clique no botão e peças com dados aleatórios são geradas  
-✅ **Esteira Industrial Animada** - Visualização realista do processo de produção  
+✅ **Menu Interativo Completo** - 5 opções funcionais conforme requisitos  
+✅ **Cadastro Manual de Peças** - Insira peso, cor e comprimento de cada peça  
+✅ **Esteira Industrial Animada** - Visualização realista e compacta do processo  
+✅ **Representação Visual Inteligente** - Peças mostram cor real e tamanho proporcional  
 ✅ **Scanner de Qualidade** - Avaliação automática baseada em critérios pré-definidos  
 ✅ **Feedback Visual Instantâneo** - Cores e mensagens indicam aprovação/reprovação  
 ✅ **Armazenamento Inteligente** - Caixas fecham automaticamente com 10 peças  
@@ -54,7 +56,7 @@ Se **qualquer** critério falhar, a peça é **REPROVADA** e o sistema informa o
 
 2. **Execute o sistema:**
    ```bash
-   python sistema_gestao_pecas_visual.py
+   python sistema_gestao_pecas.py
    ```
 
 3. **Interface gráfica abrirá automaticamente!**
@@ -79,29 +81,39 @@ Quando você executar o programa, verá uma interface gráfica com:
 │        🔍          │  📦 Caixa Atual: 0/10                 │
 │  ═══════════════   │                                        │
 │                    │  📜 ÚLTIMAS PEÇAS                     │
-│  ⚙️ CONTROLES      │  (histórico das peças processadas)    │
-│  🔧 GERAR NOVA     │                                        │
-│      PEÇA          │                                        │
-│  📊 📦 🗑️         │                                        │
+│  📋 MENU           │  (histórico das peças processadas)    │
+│  INTERATIVO        │                                        │
+│  1. Cadastrar      │                                        │
+│  2. Listar         │                                        │
+│  3. Remover        │                                        │
+│  4. Caixas         │                                        │
+│  5. Relatório      │                                        │
 │                    │                                        │
 │  📋 PEÇA ATUAL     │                                        │
 │  Aguardando...     │                                        │
 └────────────────────┴───────────────────────────────────────┘
 ```
 
-### 1️⃣ Gerar Nova Peça
+### 1️⃣ Cadastrar Nova Peça
 
-**Clique no botão grande:** 🔧 **GERAR NOVA PEÇA**
+**Clique no botão:** 1. 🔧 **Cadastrar Nova Peça**
 
 O que acontece:
-1. Uma peça com dados aleatórios aparece na esteira
-2. A peça se move automaticamente da esquerda para direita
-3. Passa pelo **scanner azul** (🔍) que faz a avaliação
-4. Sistema exibe resultado com animação:
-   - ✅ **APROVADA!** (texto verde grande)
-   - ❌ **REPROVADA!** (texto vermelho grande)
-5. Peça segue para a saída correspondente
-6. Estatísticas são atualizadas automaticamente
+1. Abre janela de cadastro para você inserir:
+   - Peso (em gramas)
+   - Cor (azul, verde, vermelho, etc.)
+   - Comprimento (em centímetros)
+2. Ao clicar "Processar Peça", ela aparece na esteira
+3. A peça se move automaticamente com:
+   - **Cor real** da peça
+   - **Tamanho proporcional** (baseado no comprimento e peso)
+   - **ID e peso** exibidos na peça
+4. Passa pelo **scanner azul** (🔍) que faz a avaliação
+5. Sistema exibe resultado com animação:
+   - ✅ **APROVADA!** (texto verde)
+   - ❌ **REPROVADA!** (texto vermelho)
+6. Peça segue para a saída correspondente
+7. Estatísticas são atualizadas automaticamente
 
 **Exemplo de Peça Aprovada:**
 ```
@@ -127,11 +139,36 @@ Motivos:
 • Comprimento fora (25.0cm)
 ```
 
-### 2️⃣ Visualizar Relatório Completo
+### 2️⃣ Listar Peças Aprovadas/Reprovadas
 
-**Clique no botão:** 📊 **Relatório**
+**Clique no botão:** 2. 📋 **Listar Peças Aprovadas/Reprovadas**
 
-Abre uma janela com informações detalhadas:
+Abre uma janela mostrando:
+- Tabela com todas as peças **aprovadas** (ID, peso, cor, comprimento)
+- Tabela com todas as peças **reprovadas** com motivos detalhados
+
+### 3️⃣ Remover Peça Cadastrada
+
+**Clique no botão:** 3. 🗑️ **Remover Peça Cadastrada**
+
+- Lista todas as peças do sistema
+- Selecione uma peça para remover
+- Confirma antes de excluir
+
+### 4️⃣ Listar Caixas Fechadas
+
+**Clique no botão:** 4. 📦 **Listar Caixas Fechadas**
+
+Mostra todas as caixas que foram fechadas automaticamente:
+- Cada caixa tem exatamente **10 peças aprovadas**
+- Lista os IDs das peças dentro de cada caixa
+- Mostra quantas peças estão na caixa atual (em preenchimento)
+
+### 5️⃣ Gerar Relatório Final
+
+**Clique no botão:** 5. 📊 **Gerar Relatório Final**
+
+Abre uma janela com informações completas e detalhadas:
 
 - **Estatísticas Gerais:**
   - Total de peças cadastradas
@@ -150,40 +187,26 @@ Abre uma janela com informações detalhadas:
 - **Peças Reprovadas:**
   - Lista detalhada com motivos de cada reprovação
 
-### 3️⃣ Ver Caixas Fechadas
-
-**Clique no botão:** 📦 **Caixas**
-
-Mostra todas as caixas que foram fechadas automaticamente:
-- Cada caixa tem exatamente **10 peças aprovadas**
-- Lista os IDs das peças dentro de cada caixa
-- Mostra quantas peças estão na caixa atual (em preenchimento)
-
-### 4️⃣ Limpar Sistema
-
-**Clique no botão:** 🗑️ **Limpar**
-
-Remove todos os dados e reinicia o sistema (solicita confirmação antes).
-
 ---
 
 ## 📊 Entradas e Saídas do Sistema
 
-### Entradas (Automáticas)
+### Entradas (Manual)
 
-O sistema **gera automaticamente** dados aleatórios para cada peça:
+O sistema permite **cadastro manual** de cada peça através de formulário:
 
-**Geração Inteligente:**
-- **70% de chance** de gerar peça aprovada (parâmetros dentro dos critérios)
-- **30% de chance** de gerar peça com defeitos:
-  - Peso fora do padrão (80g a 120g)
-  - Cor inválida (vermelho, amarelo, roxo)
-  - Comprimento fora do padrão (5cm a 30cm)
-  - Ou múltiplos problemas combinados
+**Dados Solicitados:**
+- **Peso** (em gramas) - Ex: 100
+- **Cor** (texto livre) - Ex: azul, verde, vermelho, amarelo, etc.
+- **Comprimento** (em centímetros) - Ex: 15
 
-Isso simula uma linha de produção real onde nem todas as peças são perfeitas.
+**Representação Visual Inteligente:**
+- A peça aparece com a **cor real** informada
+- **Largura** proporcional ao comprimento (10cm = pequena, 20cm = grande)
+- **Altura** proporcional ao peso (95g = fina, 105g = grossa)
+- **ID e peso** são exibidos na própria peça durante movimento
 
-### Exemplos de Entradas Geradas
+### Exemplos de Entradas
 
 **Peça 1 (Aprovada):**
 ```
@@ -307,12 +330,15 @@ ID #2: 120.0g, vermelho, 25.0cm
 
 | Função | Descrição |
 |--------|-----------|
-| `gerar_peca_aleatoria()` | Cria peça com dados aleatórios inteligentes |
+| `cadastrar_peca_manual()` | Abre formulário para cadastro de peça |
+| `listar_pecas()` | Lista todas as peças aprovadas e reprovadas |
+| `remover_peca()` | Remove peça cadastrada do sistema |
 | `avaliar_peca()` | Valida se peça atende aos critérios de qualidade |
 | `animar_esteira()` | Cria efeito visual de esteira em movimento |
-| `mover_peca()` | Move a peça pela linha de produção |
+| `mover_peca()` | Move a peça pela linha com tamanho proporcional |
 | `armazenar_peca_aprovada()` | Adiciona peça à caixa e gerencia fechamento |
 | `mostrar_relatorio()` | Gera relatório completo com estatísticas |
+| `mostrar_caixas()` | Exibe todas as caixas fechadas |
 | `atualizar_estatisticas()` | Atualiza contadores em tempo real |
 
 ---
@@ -347,23 +373,27 @@ Peça #11 aprovada → Caixa atual: 1/10
 
 ### Elementos da Tela
 
-**Esteira (Centro-Esquerda):**
+**Esteira (Topo):**
+- Tamanho fixo e compacto (700x180px)
 - Fundo escuro com linhas em movimento
 - Simula esteira industrial rolante
-- Peças aparecem e se movem automaticamente
+- Peças aparecem com cor real e tamanho proporcional
 
-**Scanner (Centro):**
+**Scanner (Centro da Esteira):**
 - Barra vertical azul
 - Indica ponto de inspeção
 - Flash branco ao avaliar peça
 
-**Saídas (Direita):**
-- Saída Superior: ✅ APROVADO (verde)
-- Saída Inferior: ❌ REPROVADO (vermelho)
+**Saídas (Direita da Esteira):**
+- Saída Superior: ✅ OK (verde)
+- Saída Inferior: ❌ REP (vermelho)
 
-**Painel de Controles:**
-- Botão principal grande para gerar peças
-- Botões secundários: Relatório, Caixas, Limpar
+**Menu Interativo:**
+- 1. Cadastrar Nova Peça
+- 2. Listar Peças Aprovadas/Reprovadas
+- 3. Remover Peça Cadastrada
+- 4. Listar Caixas Fechadas
+- 5. Gerar Relatório Final
 
 **Painel de Estatísticas:**
 - Atualização em tempo real
@@ -373,26 +403,35 @@ Peça #11 aprovada → Caixa atual: 1/10
 - Lista das últimas 50 peças processadas
 - Formato compacto e legível
 
-### Cores do Sistema
+### Cores das Peças (Representação Real)
 
-- 🔵 **Azul** (#89b4fa): Elementos interativos, scanner, botões
-- 🟢 **Verde** (#a6e3a1): Aprovado, sucesso, estatísticas positivas
-- 🔴 **Vermelho** (#f38ba8): Reprovado, erro, alertas
-- 🟡 **Amarelo** (#f9e2af): Avisos, peças amarelas
-- 🟣 **Roxo** (#cba6f7): Destaques, peças roxas
+As peças aparecem na esteira com sua **cor real**:
+
+- 🔵 **Azul** - Peças azuis aparecem em azul real
+- 🟢 **Verde** - Peças verdes aparecem em verde real
+- 🔴 **Vermelho** - Peças vermelhas aparecem em vermelho real
+- 🟡 **Amarelo** - Peças amarelas aparecem em amarelo real
+- 🟣 **Roxo** - Peças roxas aparecem em roxo real
+- 🟠 **Laranja** - Peças laranjas aparecem em laranja real
+- E mais cores suportadas: rosa, marrom, preto, branco, cinza
 
 ---
 
 ## 🎯 Casos de Teste
 
-### Teste 1: Processamento Básico
+### Teste 1: Cadastro e Processamento
 
-**Ação:** Clicar no botão "🔧 GERAR NOVA PEÇA" 5 vezes
+**Ação:** 
+1. Clicar em "1. Cadastrar Nova Peça"
+2. Inserir: Peso=100, Cor=azul, Comprimento=15
+3. Clicar "Processar Peça"
+4. Repetir 5 vezes com dados variados
 
 **Resultado Esperado:**
-- 5 peças são geradas
-- Cada uma se move pela esteira
-- Sistema avalia automaticamente
+- 5 peças são cadastradas e processadas
+- Cada uma aparece com cor real e tamanho proporcional
+- Peças se movem pela esteira
+- Sistema avalia automaticamente no scanner
 - Estatísticas são atualizadas
 - Histórico mostra as 5 peças
 
@@ -406,11 +445,22 @@ Peça #11 aprovada → Caixa atual: 1/10
 - Contador de caixas fechadas incrementa
 - Nova caixa inicia: 0/10
 
-### Teste 3: Relatório com Dados
+### Teste 3: Listagem de Peças
 
 **Ação:** 
-1. Gerar 20 peças
-2. Clicar em "📊 Relatório"
+1. Cadastrar várias peças
+2. Clicar em "2. Listar Peças Aprovadas/Reprovadas"
+
+**Resultado Esperado:**
+- Janela mostra tabelas separadas
+- Peças aprovadas com todos os dados
+- Peças reprovadas com motivos detalhados
+
+### Teste 4: Relatório Completo
+
+**Ação:** 
+1. Cadastrar 20 peças
+2. Clicar em "5. Gerar Relatório Final"
 
 **Resultado Esperado:**
 - Janela de relatório abre
@@ -418,29 +468,29 @@ Peça #11 aprovada → Caixa atual: 1/10
 - Exibe médias das peças aprovadas
 - Lista peças reprovadas com motivos
 
-### Teste 4: Visualização de Caixas
+### Teste 5: Visualização de Caixas
 
 **Ação:**
-1. Gerar peças até fechar 2 caixas (20 aprovadas)
-2. Clicar em "📦 Caixas"
+1. Cadastrar peças até fechar 2 caixas (20 aprovadas)
+2. Clicar em "4. Listar Caixas Fechadas"
 
 **Resultado Esperado:**
 - Janela mostra 2 caixas fechadas
 - Lista IDs das peças em cada caixa
 - Mostra status da caixa atual
 
-### Teste 5: Limpeza do Sistema
+### Teste 6: Remoção de Peça
 
 **Ação:**
-1. Gerar várias peças
-2. Clicar em "🗑️ Limpar"
-3. Confirmar
+1. Cadastrar várias peças
+2. Clicar em "3. Remover Peça Cadastrada"
+3. Selecionar uma peça
+4. Confirmar remoção
 
 **Resultado Esperado:**
-- Todos os dados são removidos
-- Estatísticas voltam a zero
-- Histórico é limpo
-- Sistema pronto para novo uso
+- Lista mostra todas as peças cadastradas
+- Peça selecionada é removida após confirmação
+- Estatísticas são atualizadas automaticamente
 
 ---
 
@@ -452,9 +502,11 @@ Peça #11 aprovada → Caixa atual: 1/10
 ✅ Feedback visual instantâneo (cores, mensagens)  
 
 ### Automático e Eficiente
-✅ Geração automática de peças (não precisa digitar dados)  
+✅ Menu interativo com todas as funcionalidades exigidas  
+✅ Cadastro manual com validação de dados  
 ✅ Avaliação instantânea de qualidade  
 ✅ Armazenamento e fechamento de caixas automático  
+✅ Representação visual realista (cor e tamanho das peças)  
 
 ### Informativo e Completo
 ✅ Estatísticas atualizadas em tempo real  
@@ -510,7 +562,9 @@ Este projeto demonstra conceitos fundamentais de:
 
 ## 👨‍💻 Autor
 
-Desenvolvido como projeto acadêmico para a disciplina de **Algoritmos e Lógica de Programação** da **UNIFECAF**.
+**Gustavo Martins**  
+Aluno da disciplina de **Algoritmos e Lógica de Programação**  
+**UNIFECAF** - 2025
 
 ---
 
@@ -530,9 +584,12 @@ git clone git@github.com:gustavo9br/sistema-gestao-pecas-industriais.git
 cd sistema-gestao-pecas-industriais
 
 # Execute o sistema
-python sistema_gestao_pecas_visual.py
+python sistema_gestao_pecas.py
 
-# Clique no botão "GERAR NOVA PEÇA" e veja a mágica acontecer! ✨
+# Use o menu interativo:
+# 1. Cadastre peças manualmente
+# 2. Veja peças se movendo na esteira com cor e tamanho reais
+# 3. Acompanhe estatísticas em tempo real! ✨
 ```
 
 ---
