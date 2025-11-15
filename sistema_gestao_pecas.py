@@ -305,19 +305,19 @@ class SistemaVisualPecas:
         frame = tk.LabelFrame(
             parent,
             text="📋 MENU INTERATIVO",
-            font=("Arial", 12, "bold"),
+            font=("Arial", 11, "bold"),
             bg=self.cor_card,
             fg=self.cor_texto,
-            padx=15,
-            pady=15
+            padx=10,
+            pady=10
         )
         frame.pack(fill=tk.X, pady=(0, 10))
         
         # 1. Cadastrar nova peça (MANUAL)
         btn_cadastrar = tk.Button(
             frame,
-            text="1. 🔧 Cadastrar Nova Peça",
-            font=("Arial", 11, "bold"),
+            text="1. 🔧  Cadastrar Nova Peça",
+            font=("Arial", 10, "bold"),
             bg=self.cor_primaria,
             fg=self.cor_fundo,
             command=self.cadastrar_peca_manual,
@@ -325,15 +325,16 @@ class SistemaVisualPecas:
             relief=tk.RAISED,
             bd=2,
             anchor="w",
-            padx=10
+            padx=8,
+            height=1
         )
-        btn_cadastrar.pack(fill=tk.X, pady=(0, 5))
+        btn_cadastrar.pack(fill=tk.X, pady=(0, 4))
         
         # 2. Listar peças aprovadas/reprovadas
         btn_listar = tk.Button(
             frame,
-            text="2. 📋 Listar Peças Aprovadas/Reprovadas",
-            font=("Arial", 11, "bold"),
+            text="2. 📋  Listar Peças Aprovadas/Reprovadas",
+            font=("Arial", 10, "bold"),
             bg=self.cor_card,
             fg=self.cor_texto,
             command=self.listar_pecas,
@@ -341,15 +342,16 @@ class SistemaVisualPecas:
             relief=tk.GROOVE,
             bd=2,
             anchor="w",
-            padx=10
+            padx=8,
+            height=1
         )
-        btn_listar.pack(fill=tk.X, pady=(0, 5))
+        btn_listar.pack(fill=tk.X, pady=(0, 4))
         
         # 3. Remover peça cadastrada
         btn_remover = tk.Button(
             frame,
-            text="3. 🗑️  Remover Peça Cadastrada",
-            font=("Arial", 11, "bold"),
+            text="3. 🗑   Remover Peça Cadastrada",
+            font=("Arial", 10, "bold"),
             bg=self.cor_card,
             fg=self.cor_texto,
             command=self.remover_peca,
@@ -357,15 +359,16 @@ class SistemaVisualPecas:
             relief=tk.GROOVE,
             bd=2,
             anchor="w",
-            padx=10
+            padx=8,
+            height=1
         )
-        btn_remover.pack(fill=tk.X, pady=(0, 5))
+        btn_remover.pack(fill=tk.X, pady=(0, 4))
         
         # 4. Listar caixas fechadas
         btn_caixas = tk.Button(
             frame,
-            text="4. 📦 Listar Caixas Fechadas",
-            font=("Arial", 11, "bold"),
+            text="4. 📦  Listar Caixas Fechadas",
+            font=("Arial", 10, "bold"),
             bg=self.cor_card,
             fg=self.cor_texto,
             command=self.mostrar_caixas,
@@ -373,15 +376,16 @@ class SistemaVisualPecas:
             relief=tk.GROOVE,
             bd=2,
             anchor="w",
-            padx=10
+            padx=8,
+            height=1
         )
-        btn_caixas.pack(fill=tk.X, pady=(0, 5))
+        btn_caixas.pack(fill=tk.X, pady=(0, 4))
         
         # 5. Gerar relatório final
         btn_relatorio = tk.Button(
             frame,
-            text="5. 📊 Gerar Relatório Final",
-            font=("Arial", 11, "bold"),
+            text="5. 📊  Gerar Relatório Final",
+            font=("Arial", 10, "bold"),
             bg=self.cor_card,
             fg=self.cor_texto,
             command=self.mostrar_relatorio,
@@ -389,24 +393,26 @@ class SistemaVisualPecas:
             relief=tk.GROOVE,
             bd=2,
             anchor="w",
-            padx=10
+            padx=8,
+            height=1
         )
-        btn_relatorio.pack(fill=tk.X, pady=(0, 5))
+        btn_relatorio.pack(fill=tk.X, pady=(0, 8))
         
         # Separador
-        tk.Frame(frame, height=2, bg=self.cor_primaria).pack(fill=tk.X, pady=10)
+        tk.Frame(frame, height=1, bg=self.cor_primaria).pack(fill=tk.X, pady=5)
         
         # EXTRA: Gerar peça aleatória (demonstração rápida)
         self.btn_gerar = tk.Button(
             frame,
-            text="🎲 DEMO: Gerar Peça Aleatória",
-            font=("Arial", 10),
+            text="🎲  DEMO: Gerar Peça Aleatória",
+            font=("Arial", 9),
             bg="#45475a",
             fg=self.cor_texto,
             command=self.gerar_peca_aleatoria,
             cursor="hand2",
             relief=tk.FLAT,
-            bd=2
+            bd=2,
+            height=1
         )
         self.btn_gerar.pack(fill=tk.X)
     
