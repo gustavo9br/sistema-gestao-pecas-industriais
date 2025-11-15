@@ -301,10 +301,10 @@ class SistemaVisualPecas:
         self.btn_gerar.config(state=tk.NORMAL)
     
     def criar_controles(self, parent):
-        """Cria os botões de controle"""
+        """Cria os botões de controle - Menu Interativo"""
         frame = tk.LabelFrame(
             parent,
-            text="⚙️ CONTROLES",
+            text="📋 MENU INTERATIVO",
             font=("Arial", 12, "bold"),
             bg=self.cor_card,
             fg=self.cor_texto,
@@ -313,66 +313,102 @@ class SistemaVisualPecas:
         )
         frame.pack(fill=tk.X, pady=(0, 10))
         
-        # Botão principal - Gerar Peça
-        self.btn_gerar = tk.Button(
+        # 1. Cadastrar nova peça (MANUAL)
+        btn_cadastrar = tk.Button(
             frame,
-            text="🔧 GERAR NOVA PEÇA",
-            font=("Arial", 14, "bold"),
+            text="1. 🔧 Cadastrar Nova Peça",
+            font=("Arial", 11, "bold"),
             bg=self.cor_primaria,
             fg=self.cor_fundo,
-            command=self.gerar_peca_aleatoria,
-            height=2,
+            command=self.cadastrar_peca_manual,
             cursor="hand2",
             relief=tk.RAISED,
-            bd=3
+            bd=2,
+            anchor="w",
+            padx=10
         )
-        self.btn_gerar.pack(fill=tk.X, pady=(0, 10))
+        btn_cadastrar.pack(fill=tk.X, pady=(0, 5))
         
-        # Frame para botões secundários
-        frame_btns = tk.Frame(frame, bg=self.cor_card)
-        frame_btns.pack(fill=tk.X)
-        
-        # Botão Relatório
-        btn_relatorio = tk.Button(
-            frame_btns,
-            text="📊 Relatório",
-            font=("Arial", 11),
+        # 2. Listar peças aprovadas/reprovadas
+        btn_listar = tk.Button(
+            frame,
+            text="2. 📋 Listar Peças Aprovadas/Reprovadas",
+            font=("Arial", 11, "bold"),
             bg=self.cor_card,
             fg=self.cor_texto,
-            command=self.mostrar_relatorio,
+            command=self.listar_pecas,
             cursor="hand2",
             relief=tk.GROOVE,
-            bd=2
+            bd=2,
+            anchor="w",
+            padx=10
         )
-        btn_relatorio.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 5))
+        btn_listar.pack(fill=tk.X, pady=(0, 5))
         
-        # Botão Caixas
+        # 3. Remover peça cadastrada
+        btn_remover = tk.Button(
+            frame,
+            text="3. 🗑️  Remover Peça Cadastrada",
+            font=("Arial", 11, "bold"),
+            bg=self.cor_card,
+            fg=self.cor_texto,
+            command=self.remover_peca,
+            cursor="hand2",
+            relief=tk.GROOVE,
+            bd=2,
+            anchor="w",
+            padx=10
+        )
+        btn_remover.pack(fill=tk.X, pady=(0, 5))
+        
+        # 4. Listar caixas fechadas
         btn_caixas = tk.Button(
-            frame_btns,
-            text="📦 Caixas",
-            font=("Arial", 11),
+            frame,
+            text="4. 📦 Listar Caixas Fechadas",
+            font=("Arial", 11, "bold"),
             bg=self.cor_card,
             fg=self.cor_texto,
             command=self.mostrar_caixas,
             cursor="hand2",
             relief=tk.GROOVE,
-            bd=2
+            bd=2,
+            anchor="w",
+            padx=10
         )
-        btn_caixas.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 5))
+        btn_caixas.pack(fill=tk.X, pady=(0, 5))
         
-        # Botão Limpar
-        btn_limpar = tk.Button(
-            frame_btns,
-            text="🗑️ Limpar",
-            font=("Arial", 11),
-            bg=self.cor_erro,
-            fg=self.cor_fundo,
-            command=self.limpar_sistema,
+        # 5. Gerar relatório final
+        btn_relatorio = tk.Button(
+            frame,
+            text="5. 📊 Gerar Relatório Final",
+            font=("Arial", 11, "bold"),
+            bg=self.cor_card,
+            fg=self.cor_texto,
+            command=self.mostrar_relatorio,
             cursor="hand2",
             relief=tk.GROOVE,
+            bd=2,
+            anchor="w",
+            padx=10
+        )
+        btn_relatorio.pack(fill=tk.X, pady=(0, 5))
+        
+        # Separador
+        tk.Frame(frame, height=2, bg=self.cor_primaria).pack(fill=tk.X, pady=10)
+        
+        # EXTRA: Gerar peça aleatória (demonstração rápida)
+        self.btn_gerar = tk.Button(
+            frame,
+            text="🎲 DEMO: Gerar Peça Aleatória",
+            font=("Arial", 10),
+            bg="#45475a",
+            fg=self.cor_texto,
+            command=self.gerar_peca_aleatoria,
+            cursor="hand2",
+            relief=tk.FLAT,
             bd=2
         )
-        btn_limpar.pack(side=tk.LEFT, fill=tk.X, expand=True)
+        self.btn_gerar.pack(fill=tk.X)
     
     def criar_info_peca(self, parent):
         """Cria área de informações da peça atual"""
@@ -518,8 +554,325 @@ class SistemaVisualPecas:
     
     # ========== LÓGICA DO SISTEMA ==========
     
+    def cadastrar_peca_manual(self):
+        """Abre janela para cadastrar peça manualmente"""
+        if self.animacao_ativa:
+            messagebox.showwarning("Aguarde", "Aguarde a peça atual terminar o processamento!")
+            return
+        
+        # Cria janela de cadastro
+        janela = tk.Toplevel(self.root)
+        janela.title("🔧 Cadastrar Nova Peça")
+        janela.geometry("400x350")
+        janela.configure(bg=self.cor_fundo)
+        janela.resizable(False, False)
+        
+        # Frame principal
+        frame = tk.Frame(janela, bg=self.cor_card, padx=20, pady=20)
+        frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
+        tk.Label(
+            frame,
+            text="📋 CADASTRAR NOVA PEÇA",
+            font=("Arial", 14, "bold"),
+            bg=self.cor_card,
+            fg=self.cor_primaria
+        ).pack(pady=(0, 20))
+        
+        # ID
+        tk.Label(
+            frame,
+            text=f"ID da Peça: #{self.proximo_id}",
+            font=("Arial", 11),
+            bg=self.cor_card,
+            fg=self.cor_texto
+        ).pack(anchor=tk.W, pady=(0, 10))
+        
+        # Peso
+        tk.Label(
+            frame,
+            text="Peso (gramas):",
+            font=("Arial", 10),
+            bg=self.cor_card,
+            fg=self.cor_texto
+        ).pack(anchor=tk.W, pady=(5, 0))
+        
+        entrada_peso = tk.Entry(frame, font=("Arial", 11), width=30)
+        entrada_peso.pack(fill=tk.X, pady=(0, 10))
+        
+        # Cor
+        tk.Label(
+            frame,
+            text="Cor (azul, verde, vermelho, etc):",
+            font=("Arial", 10),
+            bg=self.cor_card,
+            fg=self.cor_texto
+        ).pack(anchor=tk.W, pady=(5, 0))
+        
+        entrada_cor = tk.Entry(frame, font=("Arial", 11), width=30)
+        entrada_cor.pack(fill=tk.X, pady=(0, 10))
+        
+        # Comprimento
+        tk.Label(
+            frame,
+            text="Comprimento (centímetros):",
+            font=("Arial", 10),
+            bg=self.cor_card,
+            fg=self.cor_texto
+        ).pack(anchor=tk.W, pady=(5, 0))
+        
+        entrada_comprimento = tk.Entry(frame, font=("Arial", 11), width=30)
+        entrada_comprimento.pack(fill=tk.X, pady=(0, 20))
+        
+        # Função para processar
+        def processar_cadastro():
+            try:
+                peso = float(entrada_peso.get())
+                cor = entrada_cor.get().strip()
+                comprimento = float(entrada_comprimento.get())
+                
+                if not cor:
+                    messagebox.showerror("Erro", "Preencha a cor!")
+                    return
+                
+                # Cria a peça
+                self.peca_atual = {
+                    'id': self.proximo_id,
+                    'peso': round(peso, 2),
+                    'cor': cor,
+                    'comprimento': round(comprimento, 2),
+                    'aprovado': None,
+                    'motivos_reprovacao': [],
+                    'avaliada': False
+                }
+                self.proximo_id += 1
+                
+                # Fecha janela
+                janela.destroy()
+                
+                # Inicia animação
+                self.peca_x = 50
+                self.animacao_ativa = True
+                self.animar_esteira()
+                self.atualizar_info_peca()
+                
+            except ValueError:
+                messagebox.showerror("Erro", "Peso e comprimento devem ser números!")
+        
+        # Botões
+        frame_btns = tk.Frame(frame, bg=self.cor_card)
+        frame_btns.pack(fill=tk.X)
+        
+        btn_cancelar = tk.Button(
+            frame_btns,
+            text="Cancelar",
+            font=("Arial", 10),
+            bg=self.cor_erro,
+            fg=self.cor_fundo,
+            command=janela.destroy,
+            cursor="hand2",
+            width=12
+        )
+        btn_cancelar.pack(side=tk.LEFT, padx=(0, 5))
+        
+        btn_processar = tk.Button(
+            frame_btns,
+            text="Processar Peça",
+            font=("Arial", 10, "bold"),
+            bg=self.cor_primaria,
+            fg=self.cor_fundo,
+            command=processar_cadastro,
+            cursor="hand2",
+            width=15
+        )
+        btn_processar.pack(side=tk.RIGHT)
+    
+    def listar_pecas(self):
+        """Lista todas as peças aprovadas e reprovadas"""
+        # Cria janela
+        janela = tk.Toplevel(self.root)
+        janela.title("📋 Peças Aprovadas e Reprovadas")
+        janela.geometry("700x600")
+        janela.configure(bg=self.cor_fundo)
+        
+        # Frame principal com scroll
+        frame_principal = tk.Frame(janela, bg=self.cor_fundo)
+        frame_principal.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+        scrollbar = tk.Scrollbar(frame_principal)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        texto = tk.Text(
+            frame_principal,
+            font=("Courier", 10),
+            bg=self.cor_card,
+            fg=self.cor_texto,
+            yscrollcommand=scrollbar.set,
+            padx=15,
+            pady=15,
+            wrap=tk.WORD
+        )
+        texto.pack(fill=tk.BOTH, expand=True)
+        scrollbar.config(command=texto.yview)
+        
+        # Gera conteúdo
+        conteudo = "=" * 70 + "\n"
+        conteudo += "  LISTAGEM DE PEÇAS\n"
+        conteudo += "=" * 70 + "\n\n"
+        
+        # Aprovadas
+        conteudo += f"✅ PEÇAS APROVADAS ({len(self.pecas_aprovadas)}):\n"
+        conteudo += "-" * 70 + "\n"
+        
+        if self.pecas_aprovadas:
+            conteudo += f"{'ID':<6} {'Peso (g)':<12} {'Cor':<15} {'Comprimento (cm)':<18}\n"
+            conteudo += "-" * 70 + "\n"
+            for peca in self.pecas_aprovadas:
+                conteudo += f"#{peca['id']:<5} {peca['peso']:<12.2f} {peca['cor']:<15} {peca['comprimento']:<18.2f}\n"
+        else:
+            conteudo += "Nenhuma peça aprovada.\n"
+        
+        conteudo += "\n"
+        
+        # Reprovadas
+        conteudo += f"❌ PEÇAS REPROVADAS ({len(self.pecas_reprovadas)}):\n"
+        conteudo += "-" * 70 + "\n"
+        
+        if self.pecas_reprovadas:
+            conteudo += f"{'ID':<6} {'Peso (g)':<12} {'Cor':<15} {'Comprimento (cm)':<18}\n"
+            conteudo += "-" * 70 + "\n"
+            for peca in self.pecas_reprovadas:
+                conteudo += f"#{peca['id']:<5} {peca['peso']:<12.2f} {peca['cor']:<15} {peca['comprimento']:<18.2f}\n"
+                conteudo += "       Motivos da reprovação:\n"
+                for motivo in peca['motivos_reprovacao']:
+                    conteudo += f"       • {motivo}\n"
+                conteudo += "\n"
+        else:
+            conteudo += "Nenhuma peça reprovada.\n"
+        
+        texto.insert('1.0', conteudo)
+        texto.config(state=tk.DISABLED)
+    
+    def remover_peca(self):
+        """Remove uma peça cadastrada"""
+        if not self.pecas_cadastradas:
+            messagebox.showinfo("Remover Peça", "Não há peças cadastradas no sistema.")
+            return
+        
+        # Cria janela
+        janela = tk.Toplevel(self.root)
+        janela.title("🗑️ Remover Peça")
+        janela.geometry("500x400")
+        janela.configure(bg=self.cor_fundo)
+        
+        # Frame principal
+        frame = tk.Frame(janela, bg=self.cor_card, padx=20, pady=20)
+        frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
+        tk.Label(
+            frame,
+            text="🗑️  REMOVER PEÇA CADASTRADA",
+            font=("Arial", 14, "bold"),
+            bg=self.cor_card,
+            fg=self.cor_erro
+        ).pack(pady=(0, 15))
+        
+        # Lista de peças
+        tk.Label(
+            frame,
+            text="Peças cadastradas:",
+            font=("Arial", 10),
+            bg=self.cor_card,
+            fg=self.cor_texto
+        ).pack(anchor=tk.W, pady=(0, 5))
+        
+        # Frame com scroll para lista
+        frame_lista = tk.Frame(frame, bg=self.cor_card)
+        frame_lista.pack(fill=tk.BOTH, expand=True, pady=(0, 10))
+        
+        scrollbar = tk.Scrollbar(frame_lista)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        lista = tk.Listbox(
+            frame_lista,
+            font=("Courier", 9),
+            bg="#2e2e3e",
+            fg=self.cor_texto,
+            yscrollcommand=scrollbar.set,
+            selectmode=tk.SINGLE
+        )
+        lista.pack(fill=tk.BOTH, expand=True)
+        scrollbar.config(command=lista.yview)
+        
+        # Preencher lista
+        for peca in self.pecas_cadastradas:
+            status = "APROVADA" if peca['aprovado'] else "REPROVADA"
+            texto = f"ID #{peca['id']} | {status} | {peca['peso']}g | {peca['cor']}"
+            lista.insert(tk.END, texto)
+        
+        # Função para remover
+        def confirmar_remocao():
+            selecao = lista.curselection()
+            if not selecao:
+                messagebox.showwarning("Atenção", "Selecione uma peça para remover!")
+                return
+            
+            indice = selecao[0]
+            peca = self.pecas_cadastradas[indice]
+            
+            resposta = messagebox.askyesno(
+                "Confirmar Remoção",
+                f"Tem certeza que deseja remover a peça #{peca['id']}?\n\n"
+                f"Peso: {peca['peso']}g\n"
+                f"Cor: {peca['cor']}\n"
+                f"Comprimento: {peca['comprimento']}cm"
+            )
+            
+            if resposta:
+                # Remover das listas
+                self.pecas_cadastradas.remove(peca)
+                
+                if peca in self.pecas_aprovadas:
+                    self.pecas_aprovadas.remove(peca)
+                elif peca in self.pecas_reprovadas:
+                    self.pecas_reprovadas.remove(peca)
+                
+                # Atualizar estatísticas
+                self.atualizar_estatisticas()
+                
+                messagebox.showinfo("Sucesso", f"Peça #{peca['id']} removida com sucesso!")
+                janela.destroy()
+        
+        # Botões
+        frame_btns = tk.Frame(frame, bg=self.cor_card)
+        frame_btns.pack(fill=tk.X, pady=(10, 0))
+        
+        btn_cancelar = tk.Button(
+            frame_btns,
+            text="Cancelar",
+            font=("Arial", 10),
+            bg=self.cor_card,
+            fg=self.cor_texto,
+            command=janela.destroy,
+            cursor="hand2",
+            width=12
+        )
+        btn_cancelar.pack(side=tk.LEFT, padx=(0, 5))
+        
+        btn_remover = tk.Button(
+            frame_btns,
+            text="Remover Peça",
+            font=("Arial", 10, "bold"),
+            bg=self.cor_erro,
+            fg=self.cor_fundo,
+            command=confirmar_remocao,
+            cursor="hand2",
+            width=15
+        )
+        btn_remover.pack(side=tk.RIGHT)
+    
     def gerar_peca_aleatoria(self):
-        """Gera uma peça com dados aleatórios"""
+        """Gera uma peça com dados aleatórios (DEMO)"""
         if self.animacao_ativa:
             return
         
